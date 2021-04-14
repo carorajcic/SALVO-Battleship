@@ -28,6 +28,7 @@ public class GamePlayer {
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ship> ships = new HashSet<>();
 
+    @OrderBy
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Salvo> salvos = new HashSet<>();
 
@@ -107,7 +108,7 @@ public class GamePlayer {
                 .stream().filter(gamePlayer -> gamePlayer.getId() != this.getId()).findFirst().orElse(new GamePlayer());
     }
 
-    private int lastTurn(GamePlayer gp){
+    private int lastTurn(GamePlayer gp) {
         return gp.getSalvos()
                 .stream()
                 .mapToInt(salvo -> salvo.getTurn())

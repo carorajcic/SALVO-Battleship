@@ -35,10 +35,6 @@ public class Salvo {
         return id;
     }
 
-   /* public void setTurn(int turn){
-        this.turn = turn;
-    } */
-
     public void setTurn(int turn) {
         this.turn = turn;
     }

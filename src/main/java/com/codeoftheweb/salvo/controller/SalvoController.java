@@ -51,13 +51,14 @@ public class SalvoController {
     @RequestMapping("/game_view/{gamePlayerId}")
     public ResponseEntity<Map<String, Object>> gamePlayers(@PathVariable long gamePlayerId, Authentication authentication) {
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
+        Player player = playerRepository.findByEmail(authentication.getName());
 
         ResponseEntity<Map<String, Object>> response;
         /* --- Si el gamePlayer está, t odo ok, sino, tira que no existe --- */
         if (gamePlayer.isPresent()) {
             response = new ResponseEntity<>(gamePlayer.get().game_view(), HttpStatus.OK);
         } else {
-            response = new ResponseEntity<>(Util.makeMap("problem", "gamePlayer doesn't exists."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Util.makeMap("problem", "gamePlayer doesn't exist."), HttpStatus.UNAUTHORIZED);
         }
         /* --- Si no está autenticado, no tiene autorización para entrar a game_view --- */
         if (!authentication.getName().equals(gamePlayer.get().getPlayer().getEmail())) {
@@ -132,8 +133,6 @@ public class SalvoController {
 
     }
 
-    // TASK 10
-
     private List<Map> hitsAndSink(GamePlayer self, GamePlayer opponent) {
 
         List<Map> hits = new ArrayList<>();
@@ -146,7 +145,7 @@ public class SalvoController {
         int destroyerDamage = 0;
         int patrolboatDamage = 0;
 
-        // ship loc
+        // Ship loc
 
         List<String> carrierLocations = findShipLocationsByType(opponent, "carrier");
         List<String> battleshipLocations = findShipLocationsByType(opponent, "battleship");
@@ -154,6 +153,10 @@ public class SalvoController {
         List<String> destroyerLocations = findShipLocationsByType(opponent, "destroyer");
         List<String> patrolboatLocations = findShipLocationsByType(opponent, "patrolboat");
 
+       /* List<Salvo> opponentSalvos = new ArrayList<>(opponent.getSalvos());
+        opponentSalvos.sort(Comparator.comparing(Salvo::getId)); */// Meto todos los salvos en una lista y
+        // los acomodo para que se muestren en
+        // orden en el JSON
 
         for (Salvo salvo : self.getSalvos()) {
 
@@ -241,7 +244,7 @@ public class SalvoController {
             return "PLACESHIPS";
         }
 
-        if (self.getOpponent() == null) {
+        if (self.getGame().getGamePlayers().size() == 1) {
             return "WAITINGFOROPP";
         }
 
@@ -264,21 +267,18 @@ public class SalvoController {
 
             if (selfLost && opponentLost) {
                 scoreRepository.save(new Score(self.getGame(), self.getPlayer(), 0.5, LocalDateTime.now()));
-                scoreRepository.save(new Score(self.getOpponent().getGame(), self.getOpponent().getPlayer(), 0.5, LocalDateTime.now()));
 
                 return "TIE";
             }
 
             if (selfLost) {
                 scoreRepository.save(new Score(self.getGame(), self.getPlayer(), 0.0, LocalDateTime.now()));
-                scoreRepository.save(new Score(self.getOpponent().getGame(), self.getOpponent().getPlayer(), 2.0, LocalDateTime.now()));
 
                 return "LOST";
             }
 
             if (opponentLost) {
-                scoreRepository.save(new Score(self.getGame(), self.getPlayer(), 2.0, LocalDateTime.now()));
-                scoreRepository.save(new Score(self.getOpponent().getGame(), self.getOpponent().getPlayer(), 0.0, LocalDateTime.now()));
+                scoreRepository.save(new Score(self.getGame(), self.getPlayer(), 1.0, LocalDateTime.now()));
 
                 return "WON";
             }
@@ -298,6 +298,5 @@ public class SalvoController {
         }
         return false;
     }
-
 }
 
