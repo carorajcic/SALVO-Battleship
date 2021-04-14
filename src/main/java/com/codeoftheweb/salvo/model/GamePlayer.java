@@ -1,7 +1,5 @@
 package com.codeoftheweb.salvo.model;
 
-import com.codeoftheweb.salvo.repository.ShipRepository;
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -95,16 +93,27 @@ public class GamePlayer {
         ships.add(ship);
     }
 
+    public void addSalvo(Salvo salvo) {
+        this.salvos.add(salvo);
+        salvo.setGamePlayer(this);
+    }
+
     public Set<Ship> getShip() {
         return ships;
     }
 
-   /* public void addShip(Set<Ship> ship){
-        ships.stream().forEach(s -> {
-            s.setGamePlayer(this);
-            this.ships.add(s);
-        });
-    } */
+    public GamePlayer getOpponent() {
+        return this.getGame().getGamePlayers()
+                .stream().filter(gamePlayer -> gamePlayer.getId() != this.getId()).findFirst().orElse(new GamePlayer());
+    }
+
+    private int lastTurn(GamePlayer gp){
+        return gp.getSalvos()
+                .stream()
+                .mapToInt(salvo -> salvo.getTurn())
+                .max()
+                .orElse(0);
+    }
 
     public Map<String, Object> gamePlayerDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();

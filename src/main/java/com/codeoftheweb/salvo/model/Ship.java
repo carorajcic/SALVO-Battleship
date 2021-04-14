@@ -1,9 +1,9 @@
 package com.codeoftheweb.salvo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +23,13 @@ public class Ship {
 
     @ElementCollection
     @Column(name = "shipLocation")
-    private List<String> shipLocations;
+    private List<String> locations = new ArrayList<>();
 
     public Ship() {
     }
 
-    public Ship(ShipType type, List<String> shipLocations, GamePlayer gamePlayer) {
-        this.shipLocations = shipLocations;
+    public Ship(ShipType type, List<String> locations, GamePlayer gamePlayer) {
+        this.locations = locations;
         this.type = type;
         this.gamePlayer = gamePlayer;
     }
@@ -50,12 +50,12 @@ public class Ship {
         this.type = type;
     }
 
-    public List<String> getShipLocations() {
-        return shipLocations;
+    public List<String> getLocations() {
+        return locations;
     }
 
-    public void setShipLocations(List<String> shipLocations) {
-        this.shipLocations = shipLocations;
+    public void setLocations(List<String> shipLocations) {
+        this.locations = shipLocations;
     }
 
     public GamePlayer getGamePlayer() {
@@ -66,13 +66,13 @@ public class Ship {
         this.gamePlayer = gamePlayer;
     }
 
-    public void addShipLocations(List<String> shipLocations) {
-        this.shipLocations.addAll(shipLocations);
+    public void addLocations(List<String> shipLocations) {
+        this.locations.addAll(shipLocations);
     }
 
     public Map<String, Object> shipDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("locations", getShipLocations());
+        dto.put("locations", getLocations());
         dto.put("type", type);
 
         return dto;

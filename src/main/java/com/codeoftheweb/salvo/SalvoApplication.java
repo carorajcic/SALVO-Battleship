@@ -66,22 +66,22 @@ public class SalvoApplication {
             //Ships POR JUEGO
             Ship ship1 = new Ship(ShipType.DESTROYER, location1, gamePlayer1); //jbauer
             Ship ship2 = new Ship(ShipType.SUBMARINE, location2, gamePlayer1); // jbauer
-            Ship ship3 = new Ship(ShipType.PATROL, location3, gamePlayer1); // jbauer
+            Ship ship3 = new Ship(ShipType.PATROL_BOAT, location3, gamePlayer1); // jbauer
             Ship ship4 = new Ship(ShipType.DESTROYER, location4, gamePlayer2); // cobrian
-            Ship ship5 = new Ship(ShipType.PATROL, location5, gamePlayer2); // cobrian
+            Ship ship5 = new Ship(ShipType.PATROL_BOAT, location5, gamePlayer2); // cobrian
 
             Ship ship6 = new Ship(ShipType.DESTROYER, location4, gamePlayer3); // jbauer
-            Ship ship7 = new Ship(ShipType.PATROL, location6, gamePlayer3); // jbauer
+            Ship ship7 = new Ship(ShipType.PATROL_BOAT, location6, gamePlayer3); // jbauer
             Ship ship8 = new Ship(ShipType.SUBMARINE, location7, gamePlayer4); // cobrian
-            Ship ship9 = new Ship(ShipType.PATROL, location8, gamePlayer4); // cobrian
+            Ship ship9 = new Ship(ShipType.PATROL_BOAT, location8, gamePlayer4); // cobrian
 
             Ship ship10 = new Ship(ShipType.DESTROYER, location4, gamePlayer5); // cobrian
-            Ship ship11 = new Ship(ShipType.PATROL, location6, gamePlayer5); // cobrian
+            Ship ship11 = new Ship(ShipType.PATROL_BOAT, location6, gamePlayer5); // cobrian
             Ship ship12 = new Ship(ShipType.SUBMARINE, location7, gamePlayer6); // talmeida
-            Ship ship13 = new Ship(ShipType.PATROL, location8, gamePlayer6); // talmeidia
+            Ship ship13 = new Ship(ShipType.PATROL_BOAT, location8, gamePlayer6); // talmeidia
 
             Ship ship14 = new Ship(ShipType.DESTROYER, location4, gamePlayer7); // cobrian
-            Ship ship15 = new Ship(ShipType.PATROL, location6, gamePlayer7); // cobrian
+            Ship ship15 = new Ship(ShipType.PATROL_BOAT, location6, gamePlayer7); // cobrian
 
             Salvo salvo1 = salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B5", "C5", "F1")));
             Salvo salvo2 = salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("F2", "D5")));

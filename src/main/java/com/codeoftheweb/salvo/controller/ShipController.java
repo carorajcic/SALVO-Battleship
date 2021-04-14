@@ -25,28 +25,26 @@ public class ShipController {
     @Autowired
     private ShipRepository shipRepository;
 
-    @RequestMapping(value = "/games/players/{gamePlayerId}/ships", method = RequestMethod.POST)
-    // request porque Reqbody no me lo reconoce
+    @PostMapping("/games/players/{gamePlayerId}/ships")
     public ResponseEntity<Map<String, Object>> addShips(@PathVariable Long gamePlayerId,
                                                         @RequestBody Set<Ship> ships, Authentication authentication) {
         if (Util.isGuest(authentication)) {
-            return new ResponseEntity<>(Util.makeMap("problem", "no user logged"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Util.makeMap("problem", "No user logged!"), HttpStatus.UNAUTHORIZED);
         }
 
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
         if (!gamePlayer.isPresent()) {
-            return new ResponseEntity<>(Util.makeMap("problem", "gamePlayer doesn't exist"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Util.makeMap("problem", "gamePlayer doesn't exist."), HttpStatus.UNAUTHORIZED);
         }
 
         if (!gamePlayer.get().getPlayer().getEmail().equals(authentication.getName())) {
-            return new ResponseEntity<>(Util.makeMap("problem", "player not authorized"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Util.makeMap("problem", "Player not authorized."), HttpStatus.UNAUTHORIZED);
         }
 
         // forbidden si el user ya tiene ships colocadas
         if (gamePlayer.get().getShips().size() > 0) {
-            return new ResponseEntity<>(Util.makeMap("problem", "ships already placed"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(Util.makeMap("problem", "Ships already placed!"), HttpStatus.FORBIDDEN);
         }
-
         // gamePlayer.get().addShip(ships);
         ships.stream().forEach(s -> {
             s.setGamePlayer(gamePlayer.get());

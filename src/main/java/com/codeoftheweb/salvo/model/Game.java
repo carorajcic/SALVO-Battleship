@@ -13,7 +13,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
-    private LocalDateTime createdDate;
+    public LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
     public Set<GamePlayer> gamePlayers = new HashSet<>();
