@@ -41,11 +41,10 @@ public class ShipController {
             return new ResponseEntity<>(Util.makeMap("problem", "Player not authorized."), HttpStatus.UNAUTHORIZED);
         }
 
-        // forbidden si el user ya tiene ships colocadas
         if (gamePlayer.get().getShips().size() > 0) {
             return new ResponseEntity<>(Util.makeMap("problem", "Ships already placed!"), HttpStatus.FORBIDDEN);
         }
-        // gamePlayer.get().addShip(ships);
+
         ships.stream().forEach(s -> {
             s.setGamePlayer(gamePlayer.get());
             shipRepository.save(s);

@@ -54,13 +54,12 @@ public class SalvoController {
         Player player = playerRepository.findByEmail(authentication.getName());
 
         ResponseEntity<Map<String, Object>> response;
-        /* --- Si el gamePlayer está, t odo ok, sino, tira que no existe --- */
+        /* --- If gamePlayer exists, ok. If not, gamePlayer doesn't exists.  --- */
         if (gamePlayer.isPresent()) {
-            response = new ResponseEntity<>(gamePlayer.get().game_view(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(Util.makeMap("problem", "gamePlayer doesn't exist."), HttpStatus.UNAUTHORIZED);
         }
-        /* --- Si no está autenticado, no tiene autorización para entrar a game_view --- */
+        /* --- If you're not authenticated, you aren't authorized to enter game_view --- */
         if (!authentication.getName().equals(gamePlayer.get().getPlayer().getEmail())) {
             return new ResponseEntity<>(Util.makeMap("problem", "Player not authorized."), HttpStatus.FORBIDDEN);
         }
@@ -137,15 +136,12 @@ public class SalvoController {
 
         List<Map> hits = new ArrayList<>();
 
-        // Total damage
-
         int carrierDamage = 0;
         int battleshipDamage = 0;
         int submarineDamage = 0;
         int destroyerDamage = 0;
         int patrolboatDamage = 0;
 
-        // Ship loc
 
         List<String> carrierLocations = findShipLocationsByType(opponent, "carrier");
         List<String> battleshipLocations = findShipLocationsByType(opponent, "battleship");
@@ -153,10 +149,6 @@ public class SalvoController {
         List<String> destroyerLocations = findShipLocationsByType(opponent, "destroyer");
         List<String> patrolboatLocations = findShipLocationsByType(opponent, "patrolboat");
 
-       /* List<Salvo> opponentSalvos = new ArrayList<>(opponent.getSalvos());
-        opponentSalvos.sort(Comparator.comparing(Salvo::getId)); */// Meto todos los salvos en una lista y
-        // los acomodo para que se muestren en
-        // orden en el JSON
 
         for (Salvo salvo : self.getSalvos()) {
 

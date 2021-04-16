@@ -89,7 +89,7 @@ public class GamePlayer {
         return this.salvos;
     }
 
-    public void addShip(Ship ship) { // meterle el set de la línea 92
+    public void addShip(Ship ship) {
         ship.setGamePlayer(this);
         ships.add(ship);
     }

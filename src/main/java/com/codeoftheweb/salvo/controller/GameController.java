@@ -32,7 +32,6 @@ public class GameController {
     public Map<String, Object> getGames(Authentication authentication) {
         Map<String, Object> dto = new LinkedHashMap<>();
 
-        /* Si NO isGuest */
         if (!Util.isGuest(authentication)) {
             dto.put("player", playerRepository.findByEmail(authentication.getName()).playerDTO());
         } else
@@ -47,12 +46,10 @@ public class GameController {
     public ResponseEntity<Map<String, Object>> createGame(Authentication authentication) {
         ResponseEntity<Map<String, Object>> response; // tipo ResponseEntity
 
-        /* --- Si es guest, no puede entrar a los juegos --- */
         if (Util.isGuest(authentication)) {
             response = new ResponseEntity<>(Util.makeMap("error", "You're not allowed to enter"), HttpStatus.FORBIDDEN);
             return response;
-
-        } /* Sino guarda player, game y gp */
+        }
         Player player = playerRepository.findByEmail(authentication.getName());
 
         Game newGame = gameRepository.save(new Game(LocalDateTime.now()));
@@ -66,33 +63,23 @@ public class GameController {
 
     @PostMapping("/game/{gameId}/players")
     public ResponseEntity<Map<String, Object>> joinGame(@PathVariable Long gameId, Authentication authentication) {
-        /* ___________________________________________________
-          | * @PathVariable para que me tome la variable       |
-          |                     en el URL                      |
-          |                                                    |
-          | * Authentication guarda datos del usuario logueado |
-          |___________________________________________________*/
 
-        /* --- Si isGuest, no está autorizado --- */
         if (Util.isGuest(authentication)) {
             return new ResponseEntity<>(Util.makeMap("problem", "player not authorized"), HttpStatus.FORBIDDEN);
         }
 
         Optional<Game> game = gameRepository.findById(gameId);
 
-        /* --- Si el juego no existe, game doesn't exist --- */
         if (!game.isPresent()) {
             return new ResponseEntity<>(Util.makeMap("problem", "game doesn't exist"), HttpStatus.FORBIDDEN);
         }
 
-        /* --- Si el juego actual tiene más de dos gp, tira que el juego está lleno --- */
         if (game.get().getGamePlayers().size() == 2) {
             return new ResponseEntity<>(Util.makeMap("error", "game is full"), HttpStatus.FORBIDDEN);
         }
 
-        /* --- Si no pasa nada de t odo esto, crear jugador y gp nuevo --- */
         Player player = playerRepository.findByEmail(authentication.getName());
-        GamePlayer gamePlayer = gamePlayerRepository.save(new GamePlayer(game.get(), player)); // get() porque game es un optional y lo tengo que llamar.
+        GamePlayer gamePlayer = gamePlayerRepository.save(new GamePlayer(game.get(), player));
 
         return new ResponseEntity<>(Util.makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
     }
