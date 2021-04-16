@@ -14,5 +14,4 @@ public enum ShipType {
     DESTROYER,
     @JsonProperty("patrolboat")
     PATROL_BOAT;
-
 }

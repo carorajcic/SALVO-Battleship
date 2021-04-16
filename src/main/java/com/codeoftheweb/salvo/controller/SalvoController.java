@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api") // Ruta
+@RequestMapping("/api")
 public class SalvoController {
 
     @Autowired
@@ -200,7 +200,7 @@ public class SalvoController {
                 }
             }
 
-            //DAÑOS POR TURNO
+            // Turn damages
 
             Map<String, Object> damageDTO = new LinkedHashMap<String, Object>();
             damageDTO.put("carrierHits", carrierHitsInTurn);
@@ -209,7 +209,7 @@ public class SalvoController {
             damageDTO.put("destroyerHits", destroyerHitsInTurn);
             damageDTO.put("patrolboatHits", patrolboatHitsInTurn);
 
-            // DAÑOS TOTALES
+            // Total damages
 
             damageDTO.put("carrier", carrierDamage);
             damageDTO.put("battleship", battleshipDamage);

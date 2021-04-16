@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api") // Ruta
+@RequestMapping("/api")
 public class PlayerController {
 
     @Autowired
@@ -33,12 +33,12 @@ public class PlayerController {
     @PostMapping("/players")
     public ResponseEntity<Map<String, Object>> register(
             @RequestParam String email, @RequestParam String password) {
-        /* --- Si email o password están vacías, tira error --- */
+        /* --- Email or password are empty, error. Missing DATA --- */
         if (email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>(Util.makeMap("error", "Missing data"), HttpStatus.FORBIDDEN);
         }
-
-        if (playerRepository.findByEmail(email) != null) { // si el mail del player ya existe
+        /* --- If Email already exists --- */
+        if (playerRepository.findByEmail(email) != null) {
             return new ResponseEntity<>(Util.makeMap("error", "Name already exists!"), HttpStatus.FORBIDDEN);
         }
         playerRepository.save(new Player(email, passwordEncoder.encode(password)));
