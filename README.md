@@ -4,7 +4,7 @@
 #### Proyecto desarrollado en el BootCamp de JAVA (MindHub) ___(Marzo de 2021)___ 
  El objetivo del proyecto es la creación de una versión online del juego __Batalla Naval__, donde el usuario podrá enfrentarse a otros rivales, ya sea en partidas creadas con anterioridad o creando una nueva.
  
-Al finalizar cada partida, se mostrará quien fue el __ganador___ y quien el __perdedor___. Si hay empate, este también se verá reflejado. 
+Al finalizar cada partida, se mostrará quien fue el __ganador__ y quien el __perdedor__. Si hay empate, este también se verá reflejado. 
 En el caso de ganar, el jugador obtendrá 1 punto. En caso de empate, cada jugador obtendrá 0.5 puntos, y, quien pierda, obtendrá 0 puntos. 
 
 Las posiciones de cada jugador podrán verse en el LeaderBoard en la pantalla principal.
